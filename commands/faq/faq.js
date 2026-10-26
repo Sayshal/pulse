@@ -1,102 +1,89 @@
 let {SlashCommandBuilder, EmbedBuilder} = require('discord.js');
 function createEmbed(data) {
-    console.log(data);
-    let embed =new EmbedBuilder()
+    let embed = new EmbedBuilder()
         .setColor('DarkGreen')
         .setTitle(data.title)
-        .setDescription(data.description)
-        .setURL(data.link);
+        .setDescription(data.description);
+    if (data.link) embed.setURL(data.link);
     if (data.img) embed.setImage(data.img);
     return embed;
 }
 let embeds = {
     enable: {
         title: 'I can\'t enable the module due to issues in required dependencies!',
-        description: 'CPR 1.0.x supports a maximum version of the D&D system of 3.3.1:\n- D&D System 3.3.1: <https://github.com/foundryvtt/dnd5e/releases/download/release-3.3.1/system.json>\n\nSome modules may no longer support 3.3.1 in their newest versions, so the most recent compatible version will not be the same as the most recent release, like the following (not dependencies, but often used alongside CPR):\n- DDB-Importer 5.2.38: <https://github.com/MrPrimate/ddb-importer/releases/download/5.2.38/module.json>\n- Rest Recovery 1.17.2: <https://github.com/roth-michael/FoundryVTT-RestRecovery/releases/download/1.17.2/module.json>\n- Tidy 5e Sheets 5.7.5: <https://github.com/kgar/foundry-vtt-tidy-5e-sheets/releases/download/v5.7.5/module.json>\n- Build-A-Bonus 12.1.4: <https://github.com/krbz999/babonus/releases/download/v12.1.4/module.json>',
-        link: 'https://github.com/chrisk123999/chris-premades/wiki/FAQ#i-cant-enable-the-module-due-to-issues-in-required-dependencies'
-    },
-    journal: {
-        title: 'The "CPR - Descriptions" journal is blank!',
-        description: 'This is intentional. Features do not come with descriptions in CPR due to copyright. You can manually fill these out and they will be added to items that are created in a macro. This includes features on summon creatures, added features during a spell such as dragon\'s breath, among others.',
-        link: 'https://github.com/chrisk123999/chris-premades/wiki/FAQ#the-cpr---descriptions-journal-is-blank'
+        description: 'Make sure you have all the required dependency modules. On v14 you may need to manually install the beta for Midi-Qol and DAE!'
     },
     vision: {
         title: 'This spell doesn\'t block player vision but it should (Darkness, Fog cloud, etc.)!',
-        description: 'Any spells/features with vision restriction work RAW mechanically. These automations are not intended to restrict player\'s vision. CPR automations are intended for RAW mechanics, not player visuals. These spells do have a configuration option to "Use Real Darkness" which will use darkness source light source, which will block vision.',
-        link: 'https://github.com/chrisk123999/chris-premades/wiki/FAQ#this-spell-doesnt-block-player-vision-but-it-should-darkness-fog-cloud-etc'
+        description: 'Any spells/features with vision restriction work RAW mechanically. These automations are not intended to restrict player\'s vision. You may use the real darkness configuration on the spell to additionally blind the player.'
     },
     animation: {
         title: 'This feature/spell should have an animation, but I\'m not seeing it!',
         description: 'Any animations by Eskiemoh typically require JB2A Patreon and Jack Kerouac\'s animated spell effects. The latter must be manually installed with the manifest URL from Chris\'s fork, which is updated for v12+: <https://github.com/chrisk123999/animated-spell-effects-cartoon/releases/latest/download/module.json>',
         link: 'https://github.com/chrisk123999/chris-premades/wiki/FAQ#this-featurespell-should-have-an-animation-but-im-not-seeing-it'
     },
-    scale: {
-        title: 'Bardic Inspiration/Battle Master maneuvers/Arcane Jolt etc. tell me I need to set a scale!',
-        description: 'This typically only comes up for non-DDBI users. Scales must be set, according to the feature descriptions, on an actor\'s sheet. Edit the specific class/subclass, on the Advancement tab, click to toggle Configuration Disabled to enable configuration, and manually set up the scale. This must be named exactly.',
-        link: 'https://github.com/chrisk123999/chris-premades/wiki/FAQ#bardic-inspirationbattle-master-maneuversarcane-jolt-etc-tell-me-i-need-to-set-a-scale'
+    'summon-image': {
+        title: 'Summons don\'t have any avatar or token art!',
+        description: 'Configure the summon with the CatKit, there are options for token and avatar images. Depending on the automation you may need to look at the generic automation tab.'
     },
-    bg3: {
-        title: 'How do the BG3 Weapon Actions work?',
-        description: 'Once you enable the setting in the Homebrew tab of CPR\'s settings, Re-equip the relevant weapons, the actions will be added to the features tab of the character sheet. The character must be proficient with the weapon.',
-        link: 'https://github.com/chrisk123999/chris-premades/wiki/FAQ#how-do-the-bg3-weapon-actions-work'
+    v14: {
+        title: 'Is the module updated for v14?',
+        description: 'The update is a work in progress. Pre-releases are available in the announcements channel. You may track progress here: <https://github.com/users/chrisk123999/projects/1>',
+        link: 'https://github.com/users/chrisk123999/projects/1'
     },
-    summons: {
-        title: 'How to use the CPR summons?',
-        description: 'Make sure the item on the actor is up to date via the Medkit.\nHave your actor\'s token on the scene and use the feature, it will spawn the token.\nYou can use the "configure" option on the Medkit on the individual item in the actor\'s inventory to set the name/avatar/token for the summon.',
-        link: 'https://github.com/chrisk123999/chris-premades/wiki/FAQ#how-to-use-the-cpr-summons'
+    'sneak-attack': {
+        title: 'Sneak attack doesn\'t work!!!',
+        description: 'Please see the faq for troubleshooting sneak attack and follow it thoroughly before asking for further support. Sneak attack is well tested and most issues are fixed with the troubleshooting steps.',
+        link: 'https://discord.com/channels/1089258451949064296/1268414349764989019/1475300325857562778'
     },
-    customize: {
-        title: 'I want to customize a CPR macro!',
-        description: 'See <https://discord.com/channels/1089258451949064296/1280039612781432873>',
-        link: 'https://github.com/chrisk123999/chris-premades'
+    ddbi: {
+        title: 'I keep getting errors when munching with DDBI and CPR!',
+        description: 'As of this FAQ, we do not have integration with DDBI for v14. Disable the "Use Cauldron of Plentiful Resources Automation?" checkbox in the DDB Muncher menu, Settings tab, General subtab.'
     },
-    mastery: {
-        title: 'I enabled the weapon masteries automation but nothing happens!',
-        description: 'Mastery must be set on the weapon used *and* the actor must have mastery of the base weapon type. Masteries can be set on the weapon proficiency window on the actor. Enabled edit mode on the actor\'s sheet and find their proficiencies, bottom right of the details page on the core sheet.',
-        link: 'https://github.com/chrisk123999/chris-premades/wiki/FAQ#i-enabled-the-weapon-masteries-automation-but-nothing-happens',
-        img: 'https://raw.githubusercontent.com/chrisk123999/pulse/refs/heads/main/images/weaponMastery.webp'
+    sources: {
+        title: 'What do I do for automation sources?',
+        description: 'Standard automation sources are CPR, GPS, & MISC (when used), then Midi sample items. You do not want DDB compendiums or official PHB/DMG/SRD etc modules selected. You have already used those compendiums to build your characters. This menu is for automations only, not content. Do NOT select other sources just to add more to the list!'
+    },
+    compendiums: {
+        title: 'What do I do for compendium sources?',
+        description: 'These compendiums are used when an automation needs an item, such as when the All-Purpose Tool automation adds a cantrip to your character sheet. You want compendiums with content and automations. Use the DDB compendiums after munching with automations. When using the PHB/DMG/SRD, it is recommended to use the compendium CatKit to duplicate and automate the compendium. This is most important for spells.'
+    },
+    settings: {
+        title: 'I can\'t see the CPR settings!',
+        description: 'As of this FAQ, CPR does not have any settings in v14. Most have been migrated to CAT or Side Effects and others have not been ported.'
+    },
+    'auto-roll-damage': {
+        title: 'Do I have to enable auto roll damage? I like rolling damage manually!',
+        description: 'For automations that affect damage or use the workflow, yes. We are not forcing you to change your settings, or to use automations. However, to receive support, you will be asked to fix your settings.'
+    },
+    cat: {
+        title: 'What is CAT?',
+        description: 'Coven\'s Automation Toolkit, a dependency of CPR in v14. CAT is the bus CPR drives to deliver your automations.'
+    },
+    'side-effects': {
+        title: 'Where is the effect interface?',
+        description: 'The effect interface and most other UI changes have been moved to another module: Side Effects. See: <https://foundryvtt.com/packages/side-effects>',
+        link: 'https://foundryvtt.com/packages/side-effects'
+    },
+    macros: {
+        title: 'Why are all my macros running when I load into the world?',
+        description: 'Remove your macro compendiums from the CAT compendium setting. Only very specific macro compendiums should be selected there, those used to overwrite automation macros.'
     }
+};
+let commandBuilder = new SlashCommandBuilder().setName('faq').setDescription('Displays FAQ posts.');
+for (let [name, config] of Object.entries(embeds)) {
+    commandBuilder.addSubcommand(subCommand =>
+        subCommand
+            .setName(name)
+            .setDescription(config.title.slice(0, 100))
+    );
 }
 module.exports = {
-    'data': new SlashCommandBuilder()
-        .setName('faq')
-        .setDescription('Displays FAQ posts.')
-        .addSubcommand(subCommand =>
-            subCommand
-                .setName('customize')
-                .setDescription('Links to macro customization FAQ.'))
-        .addSubcommand(subCommand =>
-            subCommand
-                .setName('scale')
-                .setDescription('Links to scales FAQ.'))
-        .addSubcommand(subCommand =>
-            subCommand
-                .setName('journal')
-                .setDescription('Links to blank journal FAQ.'))
-        .addSubcommand(subCommand =>
-            subCommand
-                .setName('vision')
-                .setDescription('Links to player vision FAQ.'))
-        .addSubcommand(subCommand =>
-            subCommand
-                .setName('animation')
-                .setDescription('Links to anmation FAQ.'))
-        .addSubcommand(subCommand =>
-            subCommand
-                .setName('bg3')
-                .setDescription('Links to Baldur\'s Gate 3 FAQ.'))
-        .addSubcommand(subCommand =>
-            subCommand
-                .setName('enable')
-                .setDescription('Links to module cannot be enabled FAQ.'))
-        .addSubcommand(subCommand =>
-            subCommand
-                .setName('mastery')
-                .setDescription('Links to mastery FAQ.')),
+    'data': commandBuilder,
     async execute(interaction) {
         let subCommand = interaction.options.getSubcommand();
         let embed = createEmbed(embeds[subCommand]);
         await interaction.reply({'embeds': [embed]});
     },
     'guild': 'cpr'
-}
+};
