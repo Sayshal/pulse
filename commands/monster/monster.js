@@ -30,6 +30,8 @@ module.exports = {
         for (let i of items) {
             if (i.item.source === 'cpr') {
                 message += '\nCauldron of Plentiful Resources: ' + i.item.name + ' (' + i.item.rules + ' | ' + i.item.monster + ')';
+            } else if (i.item.source === 'cpr14') {
+                message += '\nCauldron of Plentiful Resources (v14 Beta): ' + i.item.name + ' (' + i.item.rules + ' | ' + i.item.monster + ')';
             } else if (i.item.source === 'rr') {
                 message += '\nRest Recovery: ' + i.item.name + ' (' + i.item.monster + ')';
             } else if (i.item.source === 'gps') {

@@ -25,6 +25,19 @@ let modules = [
         ]
     },
     {
+        folder: 'cpr14',
+        ignored: [
+            'cpr-automation-items',
+            'cpr-embedded-macro-sample-items',
+            'cpr-summons-2014',
+            'cpr-summons-2024'
+        ],
+        monster: [
+            'cpr-monster-features-2014',
+            'cpr-monster-features-2024'
+        ]
+    },
+    {
         folder: 'gps',
         url: 'https://github.com/gambit07/gambits-premades/releases/latest/download/module.zip',
         ignored: [
@@ -55,6 +68,11 @@ let modules = [
         extraPath: '/midi-qol'
     }
 ];
+async function getV14Url() {
+    let releases = JSON.parse(await download('https://api.github.com/repos/chrisk123999/chris-premades/releases'));
+    let release = releases.find(i => !i.draft && Number(i.tag_name.split('.')[0]) >= 2);
+    return 'https://github.com/chrisk123999/chris-premades/releases/download/' + release.tag_name + '/module.zip';
+}
 export async function updateItems() {
     let data = {items: [
         {
@@ -95,7 +113,7 @@ export async function updateItems() {
     try {
         await Promise.all(modules.map(async module => {
             let folderName = './files/' + module.folder;
-            await download(module.url, folderName, {extract: true});
+            await download(module.url ?? await getV14Url(), folderName, {extract: true});
             let packPath = module.extraPath ? folderName + module.extraPath + '/packs/' : folderName + '/packs/';
             let packFolders = fs.readdirSync(packPath).filter(i => !module.ignored.includes(i));
             await Promise.all(packFolders.map(async folder => {
